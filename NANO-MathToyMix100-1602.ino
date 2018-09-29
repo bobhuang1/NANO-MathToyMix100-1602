@@ -6,6 +6,8 @@
 // Set the LCD address to 0x27 for a 16 chars and 2 line display
 LiquidCrystal_I2C display(0x27, 16, 2);
 
+#define MAXQUESTIONS 100
+int intInitialPosition = 0;
 int intCurrentStage = 0;
 int intFirstOperationType = 1; // 1-plus, 2-minus, 3-multiply
 int intSecondOperationType = 1; // 1-plus, 2-minus, 3-multiply
@@ -91,24 +93,36 @@ void setup()
 
   display.begin();
   display.backlight();
-  display.createChar(0, plus);
   display.createChar(1, minus);
   display.createChar(2, multiply);
   display.createChar(3, divide);
+  display.createChar(4, plus);
   display.clear();
-  display.setCursor(3, 0);
-  display.print("Plus-Minus");
+  display.setCursor(6, 0);
+  display.print("Mixed");
   display.setCursor(4, 1);
   display.print("Practice");
   randomSeed(analogRead(0));
   digitalWrite(ALARMPIN, HIGH);
   delay(1000);
   digitalWrite(ALARMPIN, LOW);
-  strPlusSign  = String((char)0);
+  strPlusSign  = String((char)4);
   strMinusSign  = String((char)1);
   strMultiplySign  = String((char)2);
   strDivideySign  = String((char)3);
   strEqualSign  = String((char)61);
+  if (MAXQUESTIONS > 99)
+  {
+    intInitialPosition = 4;
+  }
+  else if (MAXQUESTIONS > 9)
+  {
+    intInitialPosition = 3;
+  }
+  else
+  {
+    intInitialPosition = 2;
+  }
 }
 
 void generateQuestion1() {
@@ -184,7 +198,7 @@ void generateQuestion1() {
       intResult1 = intFirstNumber + (intSecondNumber * intThirdNumber);
     }
   }
-  intResult1Position = strQuestion1.length() + 3;
+  intResult1Position = strQuestion1.length() + intInitialPosition - 1;
 }
 
 void generateQuestion2() {
@@ -260,12 +274,12 @@ void generateQuestion2() {
       intResult2 = intFirstNumber + (intSecondNumber * intThirdNumber);
     }
   }
-  intResult2Position = strQuestion2.length() + 3;
+  intResult2Position = strQuestion2.length() + intInitialPosition - 1;
 }
 
 void loop()
 {
-  if (intQuestionCounter > 50)
+  if (intQuestionCounter > MAXQUESTIONS)
   {
     intQuestionCounter = 1;
   }
@@ -274,13 +288,28 @@ void loop()
     generateQuestion1();
     display.clear();
     display.setCursor(0, 0);
-    if (intQuestionCounter < 10)
+    if (MAXQUESTIONS > 99)
     {
-      display.print("0");
+      if (intQuestionCounter < 10)
+      {
+        display.print("00");
+      }
+      else if (intQuestionCounter < 100)
+      {
+        display.print("0");
+      }
     }
+    else if (MAXQUESTIONS > 9)
+    {
+      if (intQuestionCounter < 10)
+      {
+        display.print("0");
+      }
+    }
+
     display.print(intQuestionCounter);
     intQuestionCounter++;
-    display.setCursor(3, 0);
+    display.setCursor(intInitialPosition, 0);
     display.print(strQuestion1);
     shortBeep();
     intCurrentStage++;
@@ -289,13 +318,27 @@ void loop()
   {
     generateQuestion2();
     display.setCursor(0, 1);
-    if (intQuestionCounter < 10)
+    if (MAXQUESTIONS > 99)
     {
-      display.print("0");
+      if (intQuestionCounter < 10)
+      {
+        display.print("00");
+      }
+      else if (intQuestionCounter < 100)
+      {
+        display.print("0");
+      }
+    }
+    else if (MAXQUESTIONS > 9)
+    {
+      if (intQuestionCounter < 10)
+      {
+        display.print("0");
+      }
     }
     display.print(intQuestionCounter);
     intQuestionCounter++;
-    display.setCursor(3, 1);
+    display.setCursor(intInitialPosition, 1);
     display.print(strQuestion2);
     shortBeep();
     intCurrentStage++;
