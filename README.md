@@ -1,6 +1,6 @@
 # NANO-MathToyMix100-1602
 
-Arduino Nano math-practice toy: mixed arithmetic drills within 100 on a 16x2 character LCD.
+Arduino Nano math-practice toy: mixed three-operand drills (+, -, x) on a 16x2 character LCD. Operands are below 100; answers can go above 100 (up to 297 for a+b+c).
 
 ## License
 

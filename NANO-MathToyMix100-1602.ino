@@ -186,7 +186,7 @@ void generateQuestion1() {
     else if (intSecondOperationType == 2)
     {
       intSecondNumber = random(1, 100);
-      intThirdNumber = random(1, (intFirstNumber - intSecondNumber));
+      intThirdNumber = random(1, intFirstNumber + intSecondNumber); // subtract from the running total
       strQuestion1 =  String(intFirstNumber) + strPlusSign + String(intSecondNumber) + strMinusSign + String(intThirdNumber) + strEqualSign + "?";
       intResult1 = intFirstNumber + intSecondNumber - intThirdNumber;
     }
@@ -262,7 +262,7 @@ void generateQuestion2() {
     else if (intSecondOperationType == 2)
     {
       intSecondNumber = random(1, 100);
-      intThirdNumber = random(1, (intFirstNumber - intSecondNumber));
+      intThirdNumber = random(1, intFirstNumber + intSecondNumber); // subtract from the running total
       strQuestion2 =  String(intFirstNumber) + strPlusSign + String(intSecondNumber) + strMinusSign + String(intThirdNumber) + strEqualSign + "?";
       intResult2 = intFirstNumber + intSecondNumber - intThirdNumber;
     }
